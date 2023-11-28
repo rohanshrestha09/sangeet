@@ -5,6 +5,7 @@ import { Poppins } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import Player from './player';
 import Sider from './sider';
+import Queue from './queue';
 
 export const metadata: Metadata = {
    title: 'Create Next App',
@@ -31,7 +32,8 @@ export default function RootLayout({
                   defaultTheme='dark'
                   enableSystem
                >
-                  <main className='flex flex-col'>
+                  <main className='relative flex flex-col'>
+                     <Queue />
                      <div className='flex'>
                         <Sider />
                         {children}

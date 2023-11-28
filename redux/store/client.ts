@@ -11,7 +11,7 @@ import {
    PURGE,
    REGISTER,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import createWebStorage from 'redux-persist/es/storage/createWebStorage';
 import counterReducer from '../features/counterSlice';
 import musicReducer from '../features/musicSlice';
 
@@ -19,6 +19,25 @@ const rootReducer = combineReducers({
    counterReducer,
    musicReducer,
 });
+
+const createNoopStorage = () => {
+   return {
+      getItem() {
+         return Promise.resolve(null);
+      },
+      setItem() {
+         return Promise.resolve();
+      },
+      removeItem() {
+         return Promise.resolve();
+      },
+   };
+};
+
+const storage =
+   typeof window !== 'undefined'
+      ? createWebStorage('local')
+      : createNoopStorage();
 
 const persistConfig = {
    key: 'root',

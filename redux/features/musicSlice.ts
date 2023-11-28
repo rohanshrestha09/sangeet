@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { uniqBy } from 'lodash';
 import { TEST_SOUND } from '@/constants';
 import { Song } from '@/interface/models';
 
@@ -32,7 +33,17 @@ export const music = createSlice({
    name: 'music',
    initialState,
    reducers: {
-      addSong: (state, action: PayloadAction<Song>) => {
+      playSong: (state, action: PayloadAction<Song>) => {
+         return {
+            ...state,
+            isPlaying: true,
+            currentPlaying: action.payload,
+            nextSong:
+               state.queue.length === 1 ? action.payload : state.nextSong,
+            queue: uniqBy([action.payload, ...state.queue], 'id'),
+         };
+      },
+      enqueue: (state, action: PayloadAction<Song>) => {
          return {
             ...state,
             currentPlaying: state.currentPlaying ?? action.payload,
@@ -41,8 +52,32 @@ export const music = createSlice({
             queue: [...state.queue, action.payload],
          };
       },
+      remove: (state, action: PayloadAction<Song>) => {
+         if (state.currentPlaying?.id === action.payload.id) return;
+
+         const previousIndex = state.queue.findIndex(
+            (song) => song.id === state.previousSong?.id
+         );
+
+         const nextIndex = state.queue.findIndex(
+            (song) => song.id === state.nextSong?.id
+         );
+
+         return {
+            ...state,
+            nextSong:
+               state.nextSong?.id === action.payload.id
+                  ? state.queue[nextIndex + 1] ?? null
+                  : state.nextSong,
+            previousSong:
+               state.previousSong?.id === action.payload.id
+                  ? state.queue[previousIndex - 1] ?? null
+                  : state.previousSong,
+            queue: state.queue.filter((song) => song.id !== action.payload.id),
+         };
+      },
       next: (state) => {
-         if (!state.currentPlaying) return;
+         if (!state.nextSong) return;
 
          const currentIndex = state.queue.findIndex(
             (song) => song.id === state.currentPlaying?.id
@@ -51,15 +86,12 @@ export const music = createSlice({
          return {
             ...state,
             previousSong: state.currentPlaying,
-            nextSong:
-               currentIndex !== state.queue.length - 1
-                  ? state.queue[currentIndex + 1]
-                  : null,
+            nextSong: state.queue[currentIndex + 1] ?? null,
             currentPlaying: state.nextSong,
          };
       },
       previous: (state) => {
-         if (!state.currentPlaying) return;
+         if (!state.previousSong) return;
 
          const currentIndex = state.queue.findIndex(
             (song) => song.id === state.currentPlaying?.id
@@ -68,8 +100,7 @@ export const music = createSlice({
          return {
             ...state,
             nextSong: state.currentPlaying,
-            previousSong:
-               currentIndex === 0 ? state.queue[currentIndex - 1] : null,
+            previousSong: state.queue[currentIndex - 1] ?? null,
             currentPlaying: state.previousSong,
          };
       },
@@ -109,7 +140,8 @@ export const music = createSlice({
 export const {
    play,
    pause,
-   addSong,
+   playSong,
+   enqueue,
    next,
    previous,
    seek,
