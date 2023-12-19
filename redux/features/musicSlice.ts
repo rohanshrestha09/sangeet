@@ -43,6 +43,10 @@ export const music = createSlice({
             queue: uniqBy([action.payload, ...state.queue], 'id'),
          };
       },
+      clear: () => ({
+         ...initialState,
+      }),
+
       enqueue: (state, action: PayloadAction<Song>) => {
          return {
             ...state,
