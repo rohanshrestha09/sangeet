@@ -113,7 +113,7 @@ export default function Player() {
    }, []);
 
    return (
-      <div className='group fixed bottom-0 flex w-full flex-col bg-black'>
+      <div className='group fixed bottom-0 flex w-full flex-col bg-background'>
          <Slider
             disabled={!currentPlaying}
             max={Number(currentPlaying?.duration)}
