@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Button } from '@/components/ui/button';
 import { BsMusicNote, BsPauseFill, BsPlayFill } from 'react-icons/bs';
 import { useClientAppDispatch, useClientAppSelector } from '@/redux/hooks';
-import { pause, playSong } from '@/redux/features/musicSlice';
+import { pause, play, playSong } from '@/redux/features/musicSlice';
 
 export default function Queue() {
    const dispatch = useClientAppDispatch();
@@ -15,8 +15,8 @@ export default function Queue() {
    );
 
    return (
-      <div className='fixed right-0 top-[15%] flex h-[65vh] w-[500px] translate-x-[370px] flex-col rounded-s bg-black shadow-primary transition-all duration-500 hover:translate-x-0'>
-         <div className='flex items-center justify-between border-b border-b-primary/20 px-5 py-3'>
+      <div className='fixed right-0 top-[15%] flex h-[65vh] w-[500px] translate-x-[370px] flex-col rounded-lg border-[1px] bg-background shadow-md transition-all duration-500 hover:translate-x-0'>
+         <div className='flex items-center justify-between border-b px-5 py-3'>
             <span>Queue</span>
             <Button className='rounded-full'>Clear</Button>
          </div>
@@ -38,7 +38,13 @@ export default function Queue() {
                      ) : (
                         <BsPlayFill
                            className='hidden cursor-pointer text-lg group-hover:block'
-                           onClick={() => dispatch(playSong(song))}
+                           onClick={() =>
+                              dispatch(
+                                 currentPlaying?.id === song.id
+                                    ? play()
+                                    : playSong(song)
+                              )
+                           }
                         />
                      )}
 
