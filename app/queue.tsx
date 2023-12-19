@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Button } from '@/components/ui/button';
 import { BsMusicNote, BsPauseFill, BsPlayFill } from 'react-icons/bs';
 import { useClientAppDispatch, useClientAppSelector } from '@/redux/hooks';
-import { pause, playSong } from '@/redux/features/musicSlice';
+import { pause, play, playSong } from '@/redux/features/musicSlice';
 
 export default function Queue() {
    const dispatch = useClientAppDispatch();
@@ -38,7 +38,13 @@ export default function Queue() {
                      ) : (
                         <BsPlayFill
                            className='hidden cursor-pointer text-lg group-hover:block'
-                           onClick={() => dispatch(playSong(song))}
+                           onClick={() =>
+                              dispatch(
+                                 currentPlaying?.id === song.id
+                                    ? play()
+                                    : playSong(song)
+                              )
+                           }
                         />
                      )}
 
