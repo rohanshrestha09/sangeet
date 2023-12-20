@@ -20,7 +20,7 @@ import {
 
 export default function Search() {
    return (
-      <Command className='fixed top-[40px] h-fit w-[50vw] self-center rounded-lg border shadow-md'>
+      <Command className='fixed top-6 h-fit w-[50vw] self-center rounded-lg border shadow-md'>
          <CommandInput placeholder='Type a command or search...' />
          <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>

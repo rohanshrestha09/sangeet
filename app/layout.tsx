@@ -4,7 +4,7 @@ import { ClientProvider } from '@/redux/provider';
 import { Space_Grotesk } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import Player from './player';
-import Sider from './sider';
+import Sidebar from './sidebar';
 import Queue from './queue';
 import Search from './search';
 
@@ -35,11 +35,17 @@ export default function RootLayout({
                >
                   <main className='relative flex flex-col'>
                      <Search />
+
                      <Queue />
-                     <div className='flex'>
-                        <Sider />
-                        {children}
+
+                     <div className='grid grid-cols-5'>
+                        <Sidebar />
+
+                        <section className='border-l-1 col-span-4'>
+                           {children}
+                        </section>
                      </div>
+
                      <Player />
                   </main>
                </ThemeProvider>

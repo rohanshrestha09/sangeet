@@ -1,5 +1,5 @@
 'use client';
 
 export default function Home() {
-   return <main />;
+   return <div className='border-l-1 h-screen w-full' />;
 }
