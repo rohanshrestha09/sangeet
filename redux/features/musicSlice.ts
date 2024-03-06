@@ -4,6 +4,7 @@ import { TEST_SOUND } from '@/constants';
 import { Song } from '@/interface/models';
 
 type MusicState = {
+   query: string;
    queue: Song[];
    currentPlaying: Song | null;
    nextSong: Song | null;
@@ -16,7 +17,8 @@ type MusicState = {
    volume: number;
 };
 
-const initialState = {
+const initialState: MusicState = {
+   query: '',
    queue: [TEST_SOUND],
    currentPlaying: TEST_SOUND,
    nextSong: null,
@@ -27,12 +29,15 @@ const initialState = {
    onShuffle: false,
    onRepeat: false,
    volume: 1,
-} as MusicState;
+};
 
 export const music = createSlice({
    name: 'music',
    initialState,
    reducers: {
+      setQuery: (state, action: PayloadAction<string>) => {
+         return { ...state, query: action.payload };
+      },
       playSong: (state, action: PayloadAction<Song>) => {
          return {
             ...state,
@@ -43,10 +48,9 @@ export const music = createSlice({
             queue: uniqBy([action.payload, ...state.queue], 'id'),
          };
       },
-      clear: () => ({
-         ...initialState,
-      }),
-
+      clear: () => {
+         return { ...initialState };
+      },
       enqueue: (state, action: PayloadAction<Song>) => {
          return {
             ...state,
@@ -156,6 +160,7 @@ export const {
    enableRepeat,
    disableRepeat,
    setVolume,
+   setQuery,
 } = music.actions;
 
 export default music.reducer;

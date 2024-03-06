@@ -1,3 +1,6 @@
+'use client';
+
+import { useDeferredValue, useEffect } from 'react';
 import {
    CalendarIcon,
    EnvelopeClosedIcon,
@@ -6,7 +9,6 @@ import {
    PersonIcon,
    RocketIcon,
 } from '@radix-ui/react-icons';
-
 import {
    Command,
    CommandEmpty,
@@ -17,14 +19,43 @@ import {
    CommandSeparator,
    CommandShortcut,
 } from '@/components/ui/command';
+import { isEmpty } from 'lodash';
+import { useClientAppDispatch, useClientAppSelector } from '@/redux/hooks';
+import { useLazyGetSearchResultsQuery } from '@/redux/services/searchApi';
+import { setQuery } from '@/redux/features/musicSlice';
+import { debounce } from '@/utils';
 
 export default function Search() {
+   const dispatch = useClientAppDispatch();
+
+   const { query } = useClientAppSelector((state) => state.musicReducer);
+
+   const deferredQuery = useDeferredValue(query);
+
+   const [triggerSearch, { data }] = useLazyGetSearchResultsQuery();
+
+   const initiateSearch = debounce(
+      (query: string) => triggerSearch({ query }),
+      3000
+   );
+
+   useEffect(() => {
+      deferredQuery && initiateSearch(deferredQuery);
+   }, [deferredQuery]);
+
    return (
-      <Command className='fixed top-6 h-fit w-[50vw] self-center rounded-lg border shadow-md'>
-         <CommandInput placeholder='Type a command or search...' />
-         <CommandList>
+      <Command
+         className='fixed top-6 h-fit w-[50vw] self-center rounded-lg border shadow-md'
+         shouldFilter={false}
+      >
+         <CommandInput
+            placeholder='Type a command or search...'
+            value={deferredQuery}
+            onValueChange={(v) => dispatch(setQuery(v))}
+         />
+         <CommandList hidden={!isEmpty(data)}>
             <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup heading='Suggestions'>
+            <CommandGroup heading='Songs'>
                <CommandItem>
                   <CalendarIcon className='mr-2 h-4 w-4' />
                   <span>Calendar</span>
@@ -39,7 +70,7 @@ export default function Search() {
                </CommandItem>
             </CommandGroup>
             <CommandSeparator />
-            <CommandGroup heading='Settings'>
+            <CommandGroup heading='Albums'>
                <CommandItem>
                   <PersonIcon className='mr-2 h-4 w-4' />
                   <span>Profile</span>

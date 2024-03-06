@@ -24,4 +24,5 @@ export const searchApi = createApi({
    }),
 });
 
-export const { useGetSearchResultsQuery } = searchApi;
+export const { useGetSearchResultsQuery, useLazyGetSearchResultsQuery } =
+   searchApi;

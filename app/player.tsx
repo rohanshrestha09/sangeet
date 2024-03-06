@@ -143,7 +143,7 @@ export default function Player() {
                <div className='flex flex-col gap-0.5'>
                   <span className='text-base'>{currentPlaying?.name}</span>
 
-                  <div className='flex gap-1 text-sm text-primary/60'>
+                  <div className='flex gap-1 text-sm text-muted-foreground'>
                      <span className='cursor-pointer hover:underline'>
                         {currentPlaying?.primaryArtists}
                      </span>
@@ -162,7 +162,7 @@ export default function Player() {
                   <BsShuffle
                      className={cn(
                         'h-5 w-5 cursor-pointer hover:text-primary',
-                        onShuffle ? 'text-primary' : 'text-primary/70'
+                        onShuffle ? 'text-primary' : 'text-muted-foreground'
                      )}
                      onClick={() =>
                         dispatch(onShuffle ? disableShuffle() : enableShuffle())
@@ -175,7 +175,7 @@ export default function Player() {
 
                <IoIosSkipBackward
                   className={cn(
-                     'h-7 w-7 text-primary/70',
+                     'h-7 w-7 text-muted-foreground',
                      previousSong
                         ? 'cursor-pointer hover:text-primary'
                         : 'cursor-default'
@@ -209,7 +209,7 @@ export default function Player() {
 
                <IoIosSkipForward
                   className={cn(
-                     'h-7 w-7 text-primary/70',
+                     'h-7 w-7 text-muted-foreground',
                      nextSong
                         ? 'cursor-pointer hover:text-primary'
                         : 'cursor-default'
@@ -223,7 +223,7 @@ export default function Player() {
                   <BsRepeat
                      className={cn(
                         'h-5 w-5 cursor-pointer hover:text-primary',
-                        onRepeat ? 'text-primary' : 'text-primary/70'
+                        onRepeat ? 'text-primary' : 'text-muted-foreground'
                      )}
                      onClick={() =>
                         dispatch(onRepeat ? disableRepeat() : enableRepeat())
@@ -236,7 +236,7 @@ export default function Player() {
             </div>
 
             <div className='flex w-full items-center justify-end gap-6'>
-               <span className='text-xs text-primary/70'>
+               <span className='text-xs text-muted-foreground'>
                   {`${
                      currentPlaying
                         ? moment.utc(sliderSeekValue * 1000).format('mm:ss')
@@ -254,12 +254,12 @@ export default function Player() {
                <div className='flex items-center gap-2.5'>
                   {isMuted ? (
                      <HiOutlineSpeakerXMark
-                        className='h-5 w-5 cursor-pointer text-primary/70 hover:text-primary'
+                        className='h-5 w-5 cursor-pointer text-muted-foreground hover:text-primary'
                         onClick={() => dispatch(unmute())}
                      />
                   ) : (
                      <HiOutlineSpeakerWave
-                        className='h-5 w-5 cursor-pointer text-primary/70 hover:text-primary'
+                        className='h-5 w-5 cursor-pointer text-muted-foreground hover:text-primary'
                         onClick={() => dispatch(mute())}
                      />
                   )}

@@ -60,13 +60,13 @@ export default function Queue() {
                      <div className='flex flex-col gap-0.5'>
                         <span className='text-base'>{song?.name}</span>
 
-                        <span className='text-sm text-primary/60 group-hover:text-primary'>
+                        <span className='text-sm text-muted-foreground group-hover:text-primary'>
                            {song?.primaryArtists}
                         </span>
                      </div>
                   </div>
 
-                  <span className='text-base text-primary/60 group-hover:text-primary'>
+                  <span className='text-base text-muted-foreground group-hover:text-primary'>
                      {moment.utc(Number(song?.duration) * 1000).format('mm:ss')}
                   </span>
                </div>

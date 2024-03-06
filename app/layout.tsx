@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { ClientProvider } from '@/redux/provider';
 import { Space_Grotesk } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
+import { withHydration } from '@/redux/withHydration';
 import Player from './player';
 import Sidebar from './sidebar';
 import Queue from './queue';
@@ -19,11 +20,7 @@ const spaceGrotesk = Space_Grotesk({
    weight: ['500'],
 });
 
-export default function RootLayout({
-   children,
-}: {
-   children: React.ReactNode;
-}) {
+function RootLayout({ children }: { children: React.ReactNode }) {
    return (
       <html lang='en'>
          <body className={`font-sans ${spaceGrotesk.variable}`}>
@@ -41,7 +38,7 @@ export default function RootLayout({
                      <div className='grid grid-cols-5'>
                         <Sidebar />
 
-                        <section className='border-l-1 col-span-4'>
+                        <section className='col-span-4 border-l'>
                            {children}
                         </section>
                      </div>
@@ -54,3 +51,5 @@ export default function RootLayout({
       </html>
    );
 }
+
+export default withHydration(RootLayout, async (store) => store.getState());
